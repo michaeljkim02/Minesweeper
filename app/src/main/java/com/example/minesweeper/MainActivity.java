@@ -3,23 +3,21 @@ package com.example.minesweeper;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.gridlayout.widget.GridLayout;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.os.Handler;
 import java.util.Random;
 import java.util.HashSet;
 import java.util.Stack;
+import android.widget.EditText;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final int COLUMN_COUNT = 8;
-    private static final int ROW_COUNT = 8;
 
     // save the TextViews of all cells in an array, so later on,
     // when a TextView is clicked, we know which cell it is
@@ -30,7 +28,10 @@ public class MainActivity extends AppCompatActivity {
     private boolean running = true;
     private HashSet<Integer> bombs = new HashSet<Integer>();
     private int flags = 4;
-    public boolean alive = true;
+    private boolean alive = true;
+    private boolean pick = true;
+    private String values[];
+
 
     private int dpToPixel(int dp) {
         float density = Resources.getSystem().getDisplayMetrics().density;
@@ -63,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
                 cell_tvs.add(tv);
             }
         }
+        //for array
+        values = new String[cell_tvs.size()];
+
         //for timer
         if (savedInstanceState != null) {
             clock = savedInstanceState.getInt("clock");
@@ -88,11 +92,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view){
                 String check = inter.getText().toString();
                 if(check.equals("\uD83D\uDEA9")){
-                    check = "pick";
                     inter.setText(R.string.pick);
+                    pick = true;
                 }else{
-                    check = "flag";
                     inter.setText(R.string.flag);
+                    pick = false;
                 }
             }
         });
@@ -150,9 +154,11 @@ public class MainActivity extends AppCompatActivity {
             }
             if (counter > 0) {
                 cell_tvs.get(current).setText(String.valueOf(counter));
+                values[current] = String.valueOf(counter);
+            }else if(counter == 0){
+                values[current] = "";
             }
         }
-
     }
 
     private int findIndexOfCellTextView(TextView tv) {
@@ -163,10 +169,33 @@ public class MainActivity extends AppCompatActivity {
         return -1;
     }
 
+    //sendMessage
+    public void sendMessage(){
+        String message;
+        if(alive){
+            message = clock + " seconds." + "\n" + "You won." + "\n" + "Good job!";
+        }else{
+            message = clock + " seconds." + "\n" + "You lost." + "\n" + "Try again!";
+        }
+
+        Intent intent = new Intent(this, ResultsActivity.class);
+        intent.putExtra("com.example.sendmessage.MESSAGE", message);
+
+        startActivity(intent);
+    }
+
+    //when clicking a cell
     public void onClickTV(View view){
+        //when game over
+        if(!running) {
+            sendMessage();
+            return;
+        }
+
         TextView tv = (TextView) view;
         int loc = findIndexOfCellTextView(tv);
-        if(!bombs.contains(loc) && tv.getCurrentTextColor() == Color.GREEN){//if safe space
+        //if safe space
+        if(!bombs.contains(loc) && tv.getCurrentTextColor() == Color.GREEN && pick && !tv.getText().equals("\uD83D\uDEA9")){
             if(!cell_tvs.get(loc).getText().equals("1") && !cell_tvs.get(loc).getText().equals("2")
                     && !cell_tvs.get(loc).getText().equals("3") && !cell_tvs.get(loc).getText().equals("4")){
                 dfs(loc);
@@ -174,9 +203,21 @@ public class MainActivity extends AppCompatActivity {
                 tv.setTextColor(Color.BLACK);
                 tv.setBackgroundColor(Color.LTGRAY);
             }
-        } else if(bombs.contains(loc)){//if bomb
-//            alive = false;
-//            running = false;
+            //win condition
+            int win = 0;
+            for(int i = 0; i < cell_tvs.size(); i++){
+                if(cell_tvs.get(i).getCurrentTextColor() == Color.GREEN){
+                    win++;
+                }
+            }
+            if(win == 4){
+                running = false;
+                alive = true;
+            }
+        }//if bomb
+        else if(bombs.contains(loc) && pick && !tv.getText().equals("\uD83D\uDEA9")){
+            alive = false;
+            running = false;
             tv.setBackgroundColor(Color.LTGRAY);
             tv.setText(R.string.mine);
             for(int iterate: bombs){// reveal bomb
@@ -219,8 +260,10 @@ public class MainActivity extends AppCompatActivity {
                 continue;
             }
             //reveal the square
-            cell_tvs.get(current).setTextColor(Color.BLACK);
-            cell_tvs.get(current).setBackgroundColor(Color.LTGRAY);
+            if(!cell_tvs.get(current).getText().equals("\uD83D\uDEA9")){
+                cell_tvs.get(current).setTextColor(Color.BLACK);
+                cell_tvs.get(current).setBackgroundColor(Color.LTGRAY);
+            }
 
             //pushing to the stack if we are not at a number
             if(!cell_tvs.get(current).getText().equals("1") && !cell_tvs.get(current).getText().equals("2")
@@ -260,5 +303,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 }
