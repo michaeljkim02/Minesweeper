@@ -213,6 +213,9 @@ public class MainActivity extends AppCompatActivity {
             if(win == 4){
                 running = false;
                 alive = true;
+                for(int iterate: bombs){// reveal bomb
+                    cell_tvs.get(iterate).setText(R.string.mine);
+                }
             }
         }//if bomb
         else if(bombs.contains(loc) && pick && !tv.getText().equals("\uD83D\uDEA9")){
