@@ -227,16 +227,14 @@ public class MainActivity extends AppCompatActivity {
         }//when in the flag mode (NOT WORKING)
         else if(!pick){
             final TextView flagView = (TextView) findViewById(R.id.textView04);
-            int count = flags;
-            if(tv.getCurrentTextColor() == Color.GREEN && flags > 0){
+            if(tv.getCurrentTextColor() == Color.GREEN && !tv.getText().equals("\uD83D\uDEA9")){
                 tv.setText(R.string.flag);
                 flags--;
             }else if(tv.getCurrentTextColor() == Color.GREEN && tv.getText().equals("\uD83D\uDEA9")){
                 tv.setText(values[loc]);
                 flags++;
             }
-            String flag_count = String.valueOf(count);
-            flagView.setText(flag_count);
+            flagView.setText(String.valueOf(flags));
         }
     }
 
