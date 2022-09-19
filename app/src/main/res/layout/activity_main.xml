@@ -18,13 +18,11 @@
         app:columnCount="8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.361"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.616"
         app:rowCount="10">
-
-
     </androidx.gridlayout.widget.GridLayout>
 
     <TextView
@@ -44,12 +42,12 @@
         app:layout_constraintVertical_bias="0.022" />
 
     <TextView
-        android:id="@+id/textView0"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:width="64dp"
         android:height="64dp"
-        android:text="0"
+        android:text="TextView"
         android:textAlignment="center"
         android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -58,6 +56,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023" />
+
+
 
     <TextView
         android:id="@+id/textView00"
@@ -93,7 +93,7 @@
         app:layout_constraintVertical_bias="0.021" />
 
     <TextView
-        android:id="@+id/textView02"
+        android:id="@+id/interchange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
@@ -102,9 +102,11 @@
         android:text="@string/pick"
         android:textAlignment="center"
         android:textSize="32sp"
+        android:clickable="true"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.469"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.952" />
