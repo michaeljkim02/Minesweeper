@@ -220,7 +220,6 @@ public class MainActivity extends AppCompatActivity {
             tv.setBackgroundColor(Color.LTGRAY);
             tv.setText(R.string.mine);
             for(int iterate: bombs){// reveal bomb
-                cell_tvs.get(iterate).setBackgroundColor(Color.LTGRAY);
                 cell_tvs.get(iterate).setText(R.string.mine);
             }
         }//when in the flag mode (NOT WORKING)
